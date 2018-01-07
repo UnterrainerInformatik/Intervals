@@ -13,7 +13,7 @@ If you want to contribute to our repository (push, open pull requests), please u
 
 # ![Icon](https://github.com/UnterrainerInformatik/Intervals/raw/master/icon.png) Faders
 
-This class is a PCL library that contains helper classes that should make handling intervals and faders (sliders) more comfortable. 
+This is a PCL library that contains helper classes that should make handling intervals and faders (sliders) more comfortable. 
 So if you want some value clipped between two distinct values, some nice constructors for that and maybe tell the structure to advance the value to 33% and read the resulting value again, this is for you.   
 
 > **If you like this repo, please don't forget to star it.**
