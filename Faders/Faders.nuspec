@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>Unterrainer Informatik OG Team</authors>
+    <owners>Public Domain</owners>
+    <licenseUrl>http://unlicense.org</licenseUrl>
+	<iconUrl>https://github.com/UnterrainerInformatik/Intervals/raw/master/icon.png</iconUrl>
+    <projectUrl>https://github.com/UnterrainerInformatik/Intervals</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>This class is a PCL library that contains helper classes that should make handling intervals and faders (sliders) more comfortable.
+	So if you want some value clipped between two distinct values, some nice constructors for that and maybe tell the structure to advance the value to 33% and read the resulting value again, this is for you.
+	</description>
+    <summary>
+      This is a PCL library that should make handling intervals and faders (sliders) more comfortable.
+    </summary>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2018</copyright>
+    <language>en-US</language>
+    <tags>interval intervals fader faders slider min max percentage</tags>
+  </metadata>
+</package>
