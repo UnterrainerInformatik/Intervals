@@ -1,4 +1,4 @@
-[![NuGet](https://img.shields.io/nuget/v/Intervals.svg?maxAge=2592000)](https://www.nuget.org/packages/Intervals/)
+[![NuGet](https://img.shields.io/nuget/v/Intervals.svg?maxAge=2592000)](https://www.nuget.org/packages/Intervals/) [![NuGet](https://img.shields.io/nuget/dt/Intervals.svg?maxAge=2592000)](https://www.nuget.org/packages/Intervals/)
  [![license](https://img.shields.io/github/license/unterrainerinformatik/Intervals.svg?maxAge=2592000)](http://unlicense.org)  [![Twitter Follow](https://img.shields.io/twitter/follow/throbax.svg?style=social&label=Follow&maxAge=2592000)](https://twitter.com/throbax)  
 
 # General
