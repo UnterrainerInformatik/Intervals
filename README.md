@@ -52,8 +52,98 @@ You can advance them and they are guarantied to always stay in bounds.
 And they have a percentage-field that you may query, or even set and then query the value-field since the two of them are always kept in sync.
 
 ```C#
-Fader f = new Fader(0f, 500f);
+Fader f = new Fader(0f, 100f){value = 10};
+Assert.AreEqual(f.Value, 10, EPSILON);
+Assert.AreEqual(f.Percentage, 10, EPSILON);
+```
 
+It can do the following:
+
+* If you swap min and max in the constructor, those are switched back.
+* If you set the value outside the interval, the value is capped (constrained to the interval) automatically.
+* You can set or get the value using the Value property or the Percentage property. Those two correspond. Setting one corrects the other.
+* The boundaries are mutable after construction of the fader.
+* If you happen to cut your value while making the interval smaller, then the value (and the percentage) are corrected to point to the outer limits of the interval automatically.
+* You can invert the fader by setting the IsInverted property and reverse the direction while still adding values... Imagine you want to lerp from 0 to 50 and back to 0 again. You can now add 1 every update and add an if that will invert the fader if value > 50. Viola.
+
+###### ValueChangedEvent
+
+You may register a ValueChangedEvent to get notified if the value of that fader changes.
+
+```c#
+[Test]
+public void ValueChangedEventIsThrownCorrectly()
+{
+  double oldValue = 0;
+  var f = new Fader(0, 100);
+  f.ValueChanged += (sender, args) => { oldValue = args.OldValue; };
+
+  f.Value = 100;
+  Assert.AreEqual(oldValue, 0, EPSILON);
+  f.Value = 10;
+  Assert.AreEqual(oldValue, 100, EPSILON);
+  f.Value = 100;
+  Assert.AreEqual(oldValue, 10, EPSILON);
+}
+```
+
+
+
+###### Tweening
+
+Faders can be used to do tweening. Therefore they provide accessors to get the value after some common formulas like so:
+
+```c#
+[Test]
+public void QuadraticValueFadersWork()
+{
+  var f = new Fader(20.0, 30.0) {Value = 25.0};
+  Assert.IsTrue(f.QuadraticValue.Equals(22.5));
+  Assert.AreEqual(f.QuadraticValue, 22.5, EPSILON);
+
+  f.QuadraticValue = 25.0;
+  Assert.AreEqual(f.Value, 27.0710678118, EPSILON);
+}
+
+[Test]
+public void CubicValueFadersWork()
+{
+  var f = new Fader(20.0, 30.0) {Value = 25.0};
+  Assert.AreEqual(f.CubicValue, 21.25, EPSILON);
+
+  f.CubicValue = 25.0;
+  Assert.AreEqual(f.Value, 27.9370052598, EPSILON);
+}
+
+[Test]
+public void ExponentialValueFadersWork()
+{
+  var f = new Fader(20.0, 30.0) {Value = 25.0};
+  Assert.AreEqual(f.ExponentialValue, 21.7360679775, EPSILON);
+
+  f.ExponentialValue = 25;
+  Assert.AreEqual(f.Value, 28.0043710646, EPSILON);
+}
+
+[Test]
+public void SlowStartValueFadersWork()
+{
+  var f = new Fader(20.0, 30.0) {Value = 21.0};
+  Assert.AreEqual(f.BidirectionalSlow, 20.24471741, EPSILON);
+
+  f.BidirectionalSlow = 28.0;
+  Assert.AreEqual(f.Value, 27.0483276469, EPSILON);
+}
+
+[Test]
+public void QuickStartValueFadersWork()
+{
+  var f = new Fader(20.0, 30.0) {Value = 21.0};
+  Assert.AreEqual(f.BidirectionalQuick, 22.44, EPSILON);
+
+  f.BidirectionalQuick = 28.0;
+  Assert.AreEqual(f.Value, 29.2171633333, EPSILON);
+}
 ```
 
 
