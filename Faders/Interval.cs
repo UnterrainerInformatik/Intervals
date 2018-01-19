@@ -28,7 +28,7 @@
 using System;
 using JetBrains.Annotations;
 
-namespace Intervals
+namespace Faders
 {
     /// <summary>
     ///     This is a helper object that represents a mathematical interval.
@@ -61,6 +61,7 @@ namespace Intervals
             {
                 throw new ArgumentException("Min has to be smaller than or equal to max.");
             }
+
             minimalValue = min;
             maximalValue = max;
         }
@@ -81,6 +82,7 @@ namespace Intervals
             {
                 throw new ArgumentException("Min has to be smaller than or equal to max.");
             }
+
             minimalValue = min;
             maximalValue = max;
         }
@@ -92,13 +94,14 @@ namespace Intervals
         /// <value>The minimal value.</value>
         public T Min
         {
-            get { return minimalValue; }
+            get => minimalValue;
             set
             {
                 if (value.CompareTo(maximalValue) > 0)
                 {
                     maximalValue = value;
                 }
+
                 minimalValue = value;
             }
         }
@@ -110,13 +113,14 @@ namespace Intervals
         /// <value>The maximal value.</value>
         public T Max
         {
-            get { return maximalValue; }
+            get => maximalValue;
             set
             {
                 if (value.CompareTo(minimalValue) < 0)
                 {
                     minimalValue = value;
                 }
+
                 maximalValue = value;
             }
         }
@@ -148,10 +152,7 @@ namespace Intervals
         ///     <c>true</c> if the given value is in between the specified value; otherwise,
         ///     <c>false</c>.
         /// </returns>
-        public bool IsInBetween(T value)
-        {
-            return IsInBetween(value, IsMinValueExclusive, IsMaxValueExclusive);
-        }
+        public bool IsInBetween(T value) => IsInBetween(value, IsMinValueExclusive, IsMaxValueExclusive);
 
         /// <summary>
         ///     Determines whether a specified value is in between the intervals
@@ -173,27 +174,18 @@ namespace Intervals
             bool isGreaterThanMin;
             bool isSmallerThanMax;
             if (minValueExclusive)
-            {
                 isGreaterThanMin = value.CompareTo(Min) > 0;
-            }
             else
-            {
                 isGreaterThanMin = value.CompareTo(Min) >= 0;
-            }
 
             if (!isGreaterThanMin)
-            {
                 return false;
-            }
 
             if (maxValueExclusive)
-            {
                 isSmallerThanMax = value.CompareTo(Max) < 0;
-            }
             else
-            {
                 isSmallerThanMax = value.CompareTo(Max) <= 0;
-            }
+
             return isSmallerThanMax;
         }
     }

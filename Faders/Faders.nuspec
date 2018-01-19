@@ -10,7 +10,7 @@
 	<iconUrl>https://github.com/UnterrainerInformatik/Intervals/raw/master/icon.png</iconUrl>
     <projectUrl>https://github.com/UnterrainerInformatik/Intervals</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>This class is a PCL library that contains helper classes that should make handling intervals and faders (sliders) more comfortable.
+    <description>This is a PCL library that contains helper classes that should make handling intervals and faders (sliders) more comfortable.
 	So if you want some value clipped between two distinct values, some nice constructors for that and maybe tell the structure to advance the value to 33% and read the resulting value again, this is for you.
 	</description>
     <summary>

@@ -25,11 +25,11 @@
 // For more information, please refer to <http://unlicense.org>
 // ***************************************************************************
 
-using JetBrains.Annotations;
 using System;
 using System.Xml.Serialization;
+using JetBrains.Annotations;
 
-namespace Intervals
+namespace Faders
 {
     /// <summary>
     ///     This class represents a sliding potentiometer. It gets a min- and max-value.
@@ -71,8 +71,7 @@ namespace Intervals
         /// <param name="maxValue">The max value.</param>
         public Fader(double minValue, double maxValue)
         {
-            MinValue = minValue;
-            MaxValue = maxValue;
+            SetBounds(minValue, maxValue);
         }
 
         /// <summary>
@@ -88,17 +87,7 @@ namespace Intervals
         /// </param>
         public Fader(double minValue, double maxValue, double value, bool valueIsPercentage = false)
         {
-            // Avoid ArgumentException when the new min value is higher than the default max value.
-            if (minValue > MaxValue)
-            {
-                MaxValue = maxValue;
-                MinValue = minValue;
-            }
-            else
-            {
-                MinValue = minValue;
-                MaxValue = maxValue;
-            }
+            SetBounds(minValue, maxValue);
 
             if (valueIsPercentage)
             {
@@ -111,6 +100,23 @@ namespace Intervals
         }
 
         /// <summary>
+        ///     Avoid ArgumentException when the new min value is higher than the default max value by swapping them.
+        /// </summary>
+        private void SetBounds(double minValue, double maxValue)
+        {
+            if (minValue > maxValue)
+            {
+                MaxValue = minValue;
+                MinValue = maxValue;
+            }
+            else
+            {
+                MinValue = minValue;
+                MaxValue = maxValue;
+            }
+        }
+
+        /// <summary>
         ///     Gets or sets the min value.
         ///     Default value is zero.
         /// </summary>
@@ -119,7 +125,7 @@ namespace Intervals
         /// </value>
         public double MinValue
         {
-            get { return interval.Min; }
+            get => interval.Min;
             set
             {
                 interval.Min = value;
@@ -132,6 +138,7 @@ namespace Intervals
                         Value = interval.Min;
                     }
                 }
+
                 percentage = GetPercentageAtValue(value);
             }
         }
@@ -143,7 +150,7 @@ namespace Intervals
         /// <value>The max value.</value>
         public double MaxValue
         {
-            get { return interval.Max; }
+            get => interval.Max;
             set
             {
                 interval.Max = value;
@@ -156,6 +163,7 @@ namespace Intervals
                         Value = interval.Max;
                     }
                 }
+
                 percentage = GetPercentageAtValue(value);
             }
         }
@@ -167,10 +175,10 @@ namespace Intervals
         /// <value>The current value of the slider.</value>
         public double Value
         {
-            get { return value; }
+            get => value;
             set
             {
-                double oldValue = this.value;
+                var oldValue = this.value;
 
                 if (check)
                 {
@@ -197,8 +205,8 @@ namespace Intervals
         [XmlIgnore]
         public double QuadraticValue
         {
-            get { return GetValueAtPercentage(Percentage * Percentage); }
-            set { Percentage = Math.Sqrt(GetPercentageAtValue(value)); }
+            get => GetValueAtPercentage(Percentage * Percentage);
+            set => Percentage = Math.Sqrt(GetPercentageAtValue(value));
         }
 
         /// <summary>
@@ -207,8 +215,8 @@ namespace Intervals
         [XmlIgnore]
         public double CubicValue
         {
-            get { return GetValueAtPercentage(Percentage * Percentage * Percentage); }
-            set { Percentage = Math.Pow(GetPercentageAtValue(value), A_THIRD); }
+            get => GetValueAtPercentage(Percentage * Percentage * Percentage);
+            set => Percentage = Math.Pow(GetPercentageAtValue(value), A_THIRD);
         }
 
         /// <summary>
@@ -217,8 +225,8 @@ namespace Intervals
         [XmlIgnore]
         public double ExponentialValue
         {
-            get { return GetValueAtPercentage((Math.Pow(20d, Percentage) - 1.0) / 20.0); }
-            set { Percentage = Math.Log((20.0 * GetPercentageAtValue(value)) + 1.0) / Math.Log(20.0); }
+            get => GetValueAtPercentage((Math.Pow(20d, Percentage) - 1.0) / 20.0);
+            set => Percentage = Math.Log((20.0 * GetPercentageAtValue(value)) + 1.0) / Math.Log(20.0);
         }
 
         /// <summary>
@@ -228,8 +236,8 @@ namespace Intervals
         [XmlIgnore]
         public double BidirectionalSlow
         {
-            get { return GetValueAtPercentage((Math.Cos((Percentage - 1.0) * Math.PI) + 1.0) / 2.0); }
-            set { Percentage = 1.0 - (Math.Acos(2.0 * GetPercentageAtValue(value) - 1.0) / Math.PI); }
+            get => GetValueAtPercentage((Math.Cos((Percentage - 1.0) * Math.PI) + 1.0) / 2.0);
+            set => Percentage = 1.0 - (Math.Acos(2.0 * GetPercentageAtValue(value) - 1.0) / Math.PI);
         }
 
         /// <summary>
@@ -238,8 +246,8 @@ namespace Intervals
         [XmlIgnore]
         public double BidirectionalQuick
         {
-            get { return GetValueAtPercentage((Math.Pow((2.0 * Percentage - 1.0), 3.0) + 1.0) / 2.0); }
-            set { Percentage = (Math.Pow(2.0 * GetPercentageAtValue(value) - 1.0, A_THIRD) + 1.0) / 2.0; }
+            get => GetValueAtPercentage((Math.Pow((2.0 * Percentage - 1.0), 3.0) + 1.0) / 2.0);
+            set => Percentage = (Math.Pow(2.0 * GetPercentageAtValue(value) - 1.0, A_THIRD) + 1.0) / 2.0;
         }
 
         /// <summary>
@@ -249,35 +257,27 @@ namespace Intervals
         /// <value>The percentage done of the slider.</value>
         public double Percentage
         {
-            get { return percentage; }
-            set { Value = GetValueAtPercentage(value); }
+            get => percentage;
+            set => Value = GetValueAtPercentage(value);
         }
 
-        /// <summary>
-        ///     Getter for the value of a certain percentage.
-        /// </summary>
-        /// <param name="percent">The percentage.</param>
-        /// <returns>What the value of the fader would be if it was at the given percentage.</returns>
         private double GetValueAtPercentage(double percent)
         {
             if (IsInverted)
             {
                 return interval.Min + (1f - percent) * (interval.Max - interval.Min);
             }
+
             return interval.Min + percent * (interval.Max - interval.Min);
         }
 
-        /// <summary>
-        ///     Getter for the percentage of a certain value.
-        /// </summary>
-        /// <param name="val">The value.</param>
-        /// <returns>What the percentage of the fader would be if it was at the given value.</returns>
         private double GetPercentageAtValue(double val)
         {
             if (IsInverted)
             {
                 return 1f - ((val - interval.Min) / (interval.Max - interval.Min));
             }
+
             return (val - interval.Min) / (interval.Max - interval.Min);
         }
     }

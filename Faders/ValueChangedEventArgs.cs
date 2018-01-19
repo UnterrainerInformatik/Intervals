@@ -27,11 +27,8 @@
 
 using JetBrains.Annotations;
 
-namespace Intervals
+namespace Faders
 {
-    /// <summary>
-    ///     Event arguments to be used when some value of a class changes.
-    /// </summary>
     [PublicAPI]
     public struct ValueChangedEventArgs<T>
     {
